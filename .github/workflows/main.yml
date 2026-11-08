@@ -1,0 +1,48 @@
+
+name: Gerar APK UpImageStudio
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Preparar Android
+        run: |
+          if [ ! -d android ]; then
+            flutter create --platforms=android --org com.upimage.studio .
+          fi
+
+      - name: Baixar dependências
+        run: flutter pub get
+
+      - name: Compilar APK
+        run: flutter build apk --release
+
+      - name: Disponibilizar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: UpImageStudio-APK
+          path: build/app/outputs/flutter-apk/app-release.apk

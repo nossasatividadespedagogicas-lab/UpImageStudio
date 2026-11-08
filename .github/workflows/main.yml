@@ -35,6 +35,7 @@ jobs:
             flutter create --platforms=android --org com.upimage.studio .
           fi
 
+
       - name: Baixar dependências
         run: flutter pub get
 

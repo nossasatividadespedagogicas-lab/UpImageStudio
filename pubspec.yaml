@@ -1,0 +1,22 @@
+name: upimage_studio
+description: Up!Image Studio - criacao de paineis pedagogicos e impressao em mosaico.
+publish_to: "none"
+version: 0.3.0+3
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  file_picker: ^8.1.7
+  http: ^1.2.2
+  image: ^4.5.2
+  pdf: ^3.11.2
+  printing: ^5.13.4
+  path_provider: ^2.1.5
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+flutter:
+  uses-material-design: true

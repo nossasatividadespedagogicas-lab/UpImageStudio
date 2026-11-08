@@ -34,7 +34,10 @@ jobs:
           if [ ! -d android ]; then
             flutter create --platforms=android --org com.upimage.studio .
           fi
-
+      - name: Ajustar compileSdk para 36
+        run: |
+          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/' android/app/build.gradle.kts
+          grep -n 'compileSdk' android/app/build.gradle.kts
 
       - name: Baixar dependências
         run: flutter pub get

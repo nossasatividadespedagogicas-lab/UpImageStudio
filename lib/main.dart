@@ -115,14 +115,10 @@ class _StudioHomeState extends State<StudioHome> {
         overlapMm: _overlap,
       );
       if (!mounted) return;
-      await Printing.sharePdf(
-        bytes: result.printPdf,
-        filename: 'UpImage_painel_${_pages}_paginas.pdf',
-      );
-      await Printing.sharePdf(
-        bytes: result.guidePdf,
-        filename: 'UpImage_tutorial_montagem.pdf',
-      );
+     await Printing.sharePdf(
+  bytes: result.pdf,
+  filename: 'UpImage_painel_${_pages}_paginas.pdf',
+);
       setState(() => _status =
           'PDF de impressão e tutorial de montagem preparados. Use a opção de salvar/compartilhar.');
     } catch (e) {

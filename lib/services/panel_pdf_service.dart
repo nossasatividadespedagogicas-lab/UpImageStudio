@@ -30,8 +30,7 @@ class PanelPdfService {
 
     // Um único documento recebe todas as folhas e o guia final.
     final document = pw.Document();
-    final format = _format(paper);
-
+   final format = _format(paper).landscape;
     final paperWidth = paper == 'A3'
         ? 297
         : paper == 'A5'
@@ -44,9 +43,8 @@ class PanelPdfService {
             ? 210
             : 297;
 
-    final overlapRatioX = overlapMm / paperWidth;
-    final overlapRatioY = overlapMm / paperHeight;
-
+final overlapRatioX = overlapMm / paperHeight;
+ final overlapRatioY = overlapMm / paperWidth;
     // Gera cada parte do painel.
     for (var index = 0; index < pageCount; index++) {
       final row = index ~/ cols;

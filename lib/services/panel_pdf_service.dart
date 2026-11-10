@@ -1,3 +1,4 @@
+
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -27,7 +28,7 @@ class PanelPdfService {
     final cols = grid.$1;
     final rows = grid.$2;
 
-    // Um único documento para as folhas e o guia.
+    // Um único documento recebe todas as folhas e o guia final.
     final document = pw.Document();
     final format = _format(paper);
 
@@ -46,6 +47,7 @@ class PanelPdfService {
     final overlapRatioX = overlapMm / paperWidth;
     final overlapRatioY = overlapMm / paperHeight;
 
+    // Gera cada parte do painel.
     for (var index = 0; index < pageCount; index++) {
       final row = index ~/ cols;
       final col = index % cols;
@@ -86,16 +88,21 @@ class PanelPdfService {
             children: [
               pw.Expanded(
                 child: pw.Center(
-                  child: pw.Image(memory, fit: pw.BoxFit.contain),
+                  child: pw.Image(
+                    memory,
+                    fit: pw.BoxFit.contain,
+                  ),
                 ),
               ),
               pw.SizedBox(height: 5),
               pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:
+                    pw.MainAxisAlignment.spaceBetween,
                 children: [
-                  pw.Text('UP!IMAGE • PAINEL'),
+                  pw.Text('UP!IMAGE - PAINEL'),
                   pw.Text(
-                    'Folha $pageNumber de $pageCount • $rowLabel$colLabel',
+                    'Folha $pageNumber de $pageCount - '
+                    '$rowLabel$colLabel',
                   ),
                 ],
               ),
@@ -105,7 +112,7 @@ class PanelPdfService {
       );
     }
 
-    // Guia de montagem adicionado ao MESMO PDF, após as folhas.
+    // O guia é acrescentado ao MESMO documento, como última página.
     document.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -122,37 +129,45 @@ class PanelPdfService {
             ),
             pw.SizedBox(height: 8),
             pw.Text(
-              'Organize as folhas na ordem indicada. Comece pela primeira '
-              'linha e avance da esquerda para a direita.',
+              'Organize as folhas na ordem indicada. '
+              'Comece pela primeira linha e avance da esquerda '
+              'para a direita.',
             ),
             pw.SizedBox(height: 18),
             pw.Text(
               'MAPA DAS FOLHAS',
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+              ),
             ),
             pw.SizedBox(height: 8),
             pw.Table(
-              border: pw.TableBorder.all(color: PdfColors.blue),
+              border: pw.TableBorder.all(
+                color: PdfColors.blue,
+              ),
               children: List.generate(rows, (r) {
                 return pw.TableRow(
                   children: List.generate(cols, (c) {
                     final number = r * cols + c + 1;
                     return pw.Container(
-                      height: 42,
+                      height: 48,
                       alignment: pw.Alignment.center,
                       color: PdfColors.lightBlue50,
-                      child: pw.Text('$number'),
+                      child: pw.Text(
+                        number <= pageCount ? '$number' : '',
+                      ),
                     );
                   }),
                 );
               }),
             ),
-            pw.SizedBox(height: 16),
+            pw.SizedBox(height: 18),
             pw.Text(
               'PASSO A PASSO',
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+              ),
             ),
-            pw.SizedBox(height: 6),
             pw.Bullet(
               text: 'Imprima todas as páginas em tamanho real (100%).',
             ),
@@ -160,7 +175,7 @@ class PanelPdfService {
               text: 'Confira a numeração no rodapé de cada folha.',
             ),
             pw.Bullet(
-              text: 'Disponha as folhas seguindo o mapa.',
+              text: 'Organize as folhas seguindo o mapa.',
             ),
             pw.Bullet(
               text: 'Ajuste as áreas de sobreposição e alinhe os desenhos.',
@@ -173,20 +188,22 @@ class PanelPdfService {
             ),
             pw.SizedBox(height: 12),
             pw.Text(
-              'Configuração: $pageCount folhas • papel $paper • '
+              'Configuração: $pageCount folhas - papel $paper - '
               'sobreposição de $overlapMm mm.',
             ),
             pw.SizedBox(height: 6),
             pw.Text(
               'A qualidade final depende da resolução e nitidez '
-              'da imagem original.',
+              'da imagem de origem.',
             ),
           ],
         ),
       ),
     );
 
-    return PanelPdfResult(pdf: await document.save());
+    return PanelPdfResult(
+      pdf: await document.save(),
+    );
   }
 
   static (int, int) _gridFor(int pages) {
@@ -200,7 +217,9 @@ class PanelPdfService {
       case 20:
         return (4, 5);
       default:
-        throw ArgumentError('Escolha 4, 6, 10 ou 20 páginas.');
+        throw ArgumentError(
+          'Escolha 4, 6, 10 ou 20 páginas.',
+        );
     }
   }
 

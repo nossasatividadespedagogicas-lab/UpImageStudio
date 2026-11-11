@@ -284,6 +284,12 @@ class _StudioHomeState extends State<StudioHome> {
         _StatusBox(status: _status),
       ],
     );
+         const SizedBox(height: 12),
+        FilledButton.icon(
+          onPressed: _busy ? null : _upscaleImage,
+          icon: const Icon(Icons.high_quality),
+          label: const Text('Aumentar para 3840 px'),
+        ),
   }
 
   Widget _buildPanelTab() {

@@ -3,8 +3,8 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:printing/printing.dart';
-
 import 'services/ai_service.dart';
 import 'services/panel_pdf_service.dart';
 
@@ -97,6 +97,56 @@ class _StudioHomeState extends State<StudioHome> {
     }
   }
 
+  Future<void> _upscaleImage() async {
+    final originalBytes = _artBytes;
+
+    if (originalBytes == null) {
+      setState(() {
+        _status = 'Selecione uma imagem antes de aumentar a resolução.';
+      });
+      return;
+    }
+
+    setState(() {
+      _busy = true;
+      _status = 'Aumentando a resolução da imagem...';
+    });
+
+    try {
+      final original = img.decodeImage(originalBytes);
+
+      if (original == null) {
+        throw Exception('Não foi possível ler a imagem.');
+      }
+
+      final newHeight =
+          (original.height * 3840 / original.width).round();
+
+      final resized = img.copyResize(
+        original,
+        width: 3840,
+        height: newHeight,
+      interpolation: img.Interpolation.lanczos3,
+      );
+
+      final pngBytes = Uint8List.fromList(img.encodePng(resized));
+
+      setState(() {
+        _artBytes = pngBytes;
+        _artName = 'upimage_3840px.png';
+        _status = 'Imagem ampliada para 3840 pixels de largura.';
+      });
+    } catch (e) {
+      setState(() {
+        _status = 'Não foi possível ampliar a imagem: $e';
+      });
+    } finally {
+      setState(() {
+        _busy = false;
+      });
+    }
+  }
+
   Future<void> _exportPanel() async {
     final bytes = _artBytes;
     if (bytes == null) {
@@ -157,7 +207,7 @@ class _StudioHomeState extends State<StudioHome> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+   length: 4,   
       child: Scaffold(
         appBar: AppBar(
           title: const Column(
@@ -172,6 +222,7 @@ class _StudioHomeState extends State<StudioHome> {
               Tab(icon: Icon(Icons.auto_awesome), text: 'Criar arte'),
               Tab(icon: Icon(Icons.dashboard_customize), text: 'Painel / PDF'),
               Tab(icon: Icon(Icons.chat_bubble_outline), text: 'Chat'),
+              Tab(icon: Icon(Icons.auto_fix_high), text: 'Restaurar'),
             ],
           ),
         ),
@@ -180,6 +231,7 @@ class _StudioHomeState extends State<StudioHome> {
             _buildCreateTab(),
             _buildPanelTab(),
             _buildChatTab(),
+            _buildRestoreTab(),
           ],
         ),
       ),
@@ -312,6 +364,35 @@ class _StudioHomeState extends State<StudioHome> {
           icon: const Icon(Icons.send),
           label: const Text('Enviar mensagem'),
         ),
+      ],
+    );
+  }
+    Widget _buildRestoreTab() {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text(
+          'Restaurar e Melhorar Imagens',
+          style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 12),
+        const Text(
+          'Selecione uma imagem para preparar a melhoria de qualidade.',
+        ),
+        const SizedBox(height: 16),
+        FilledButton.icon(
+          onPressed: _busy ? null : _pickImage,
+          icon: const Icon(Icons.image_search),
+          label: const Text('Selecionar imagem'),
+        ),
+        if (_artBytes != null) ...[
+          const SizedBox(height: 16),
+          Image.memory(_artBytes!, fit: BoxFit.contain),
+          const SizedBox(height: 8),
+          Text(_artName ?? 'Imagem selecionada'),
+        ],
+        const SizedBox(height: 12),
+        _StatusBox(status: _status),
       ],
     );
   }

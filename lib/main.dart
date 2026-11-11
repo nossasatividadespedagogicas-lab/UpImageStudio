@@ -126,8 +126,7 @@ class _StudioHomeState extends State<StudioHome> {
         original,
         width: 3840,
         height: newHeight,
-      interpolation: img.Interpolation.lanczos3,
-      );
+cubic      );
 
       final pngBytes = Uint8List.fromList(img.encodePng(resized));
 

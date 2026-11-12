@@ -17,6 +17,7 @@ class PanelPdfService {
     required Uint8List imageBytes,
     required int pageCount,
     required String paper,
+      required String orientation,
     required int overlapMm,
   }) async {
     final decoded = img.decodeImage(imageBytes);
@@ -30,7 +31,9 @@ class PanelPdfService {
 
     // Um único documento recebe todas as folhas e o guia final.
     final document = pw.Document();
-   final format = _format(paper).landscape;
+   final format = orientation == 'Horizontal'
+    ? _format(paper).landscape
+    : _format(paper);
     final paperWidth = paper == 'A3'
         ? 297
         : paper == 'A5'

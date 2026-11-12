@@ -7,6 +7,7 @@ import 'package:image/image.dart' as img;
 import 'package:printing/printing.dart';
 import 'services/ai_service.dart';
 import 'services/panel_pdf_service.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() => runApp(const UpImageStudioApp());
 
@@ -399,6 +400,13 @@ class _StudioHomeState extends State<StudioHome> {
         ],
         const SizedBox(height: 12),
         _StatusBox(status: _status),
+
+                    FilledButton.icon(
+              onPressed: _busy ? null : _upscaleImage,
+              icon: const Icon(Icons.high_quality),
+              label: const Text('Aumentar para 3840 px'),
+            ),
+            const SizedBox(height: 12),
       ],
     );
   }

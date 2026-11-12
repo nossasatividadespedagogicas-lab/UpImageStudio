@@ -324,7 +324,19 @@ class _StudioHomeState extends State<StudioHome> {
           onChanged: (v) => setState(() => _paper = v ?? 'A4'),
         ),
         const SizedBox(height: 12),
-        Text('Sobreposição entre folhas: $_overlap mm'),
+       DropdownButtonFormField<String>(
+  value: _orientation,
+  decoration: const InputDecoration(
+    labelText: 'Orientação da folha',
+  ),
+  items: const ['Vertical', 'Horizontal']
+      .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+      .toList(),
+  onChanged: (v) => setState(
+    () => _orientation = v ?? 'Horizontal',
+  ),
+),
+const SizedBox(height: 12), Text('Sobreposição entre folhas: $_overlap mm'),
         Slider(
           value: _overlap.toDouble(),
           min: 0,

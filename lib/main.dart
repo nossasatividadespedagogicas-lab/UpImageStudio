@@ -8,7 +8,7 @@ import 'package:printing/printing.dart';
 import 'services/ai_service.dart';
 import 'services/panel_pdf_service.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:share_plus/share_plus.dart';
 void main() => runApp(const UpImageStudioApp());
 
 class UpImageStudioApp extends StatelessWidget {

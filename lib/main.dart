@@ -130,7 +130,14 @@ class _StudioHomeState extends State<StudioHome> {
 );
 
       final pngBytes = Uint8List.fromList(img.encodePng(resized));
+      final directory = await getTemporaryDirectory();
+      final file = File('${directory.path}/upimage_3840px.png');
+      await file.writeAsBytes(pngBytes);
 
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: 'Imagem ampliada pelo Up!Image Studio',
+      );
       setState(() {
         _artBytes = pngBytes;
         _artName = 'upimage_3840px.png';

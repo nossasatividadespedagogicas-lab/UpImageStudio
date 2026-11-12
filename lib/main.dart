@@ -54,6 +54,7 @@ class _StudioHomeState extends State<StudioHome> {
   int _pages = 4;
   int _overlap = 5;
   String _paper = 'A4';
+  String _orientation = 'Horizontal';
   bool _busy = false;
   String _status = 'Descreva o painel que deseja criar ou selecione uma arte pronta.';
   String _chatReply =
@@ -168,7 +169,7 @@ class _StudioHomeState extends State<StudioHome> {
       final result = await PanelPdfService.build(
         imageBytes: bytes,
         pageCount: _pages,
-        paper: _paper,
+        paper: _paper, orientation: _orientation,
         overlapMm: _overlap,
       );
       if (!mounted) return;

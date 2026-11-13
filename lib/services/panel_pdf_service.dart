@@ -24,8 +24,7 @@ class PanelPdfService {
     if (decoded == null) {
       throw Exception('Não foi possível ler a imagem.');
     }
-
-    final grid = _gridFor(pageCount);
+final grid = _gridFor(pageCount, orientation);
     final cols = grid.$1;
     final rows = grid.$2;
 
@@ -207,22 +206,22 @@ final overlapRatioX = overlapMm / paperHeight;
     );
   }
 
-  static (int, int) _gridFor(int pages) {
-    switch (pages) {
-      case 4:
-        return (2, 2);
-      case 6:
-        return (2, 3);
-      case 10:
-        return (2, 5);
-      case 20:
-        return (4, 5);
-      default:
-        throw ArgumentError(
-          'Escolha 4, 6, 10 ou 20 páginas.',
-        );
-    }
+ static (int, int) _gridFor(int pages, String orientation) {
+  final isHorizontal = orientation == 'Horizontal';
+
+  switch (pages) {
+    case 4:
+      return isHorizontal ? (2, 2) : (2, 2);
+    case 6:
+      return isHorizontal ? (3, 2) : (2, 3);
+    case 10:
+      return isHorizontal ? (5, 2) : (2, 5);
+    case 20:
+      return isHorizontal ? (5, 4) : (4, 5);
+    default:
+      throw ArgumentError('Escolha 4, 6, 10 ou 20 páginas.');
   }
+}
 
   static PdfPageFormat _format(String paper) {
     switch (paper) {

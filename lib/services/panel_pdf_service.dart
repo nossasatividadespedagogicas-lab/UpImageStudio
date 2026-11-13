@@ -33,20 +33,28 @@ final grid = _gridFor(pageCount, orientation);
    final format = orientation == 'Horizontal'
     ? _format(paper).landscape
     : _format(paper);
-    final paperWidth = paper == 'A3'
-        ? 297
-        : paper == 'A5'
-            ? 148
-            : 210;
+  final paperShortSide = paper == 'A3'
+    ? 297
+    : paper == 'A5'
+        ? 148
+        : 210;
 
-    final paperHeight = paper == 'A3'
-        ? 420
-        : paper == 'A5'
-            ? 210
-            : 297;
+final paperLongSide = paper == 'A3'
+    ? 420
+    : paper == 'A5'
+        ? 210
+        : 297;
 
-final overlapRatioX = overlapMm / paperHeight;
- final overlapRatioY = overlapMm / paperWidth;
+final paperWidth = orientation == 'Horizontal'
+    ? paperLongSide
+    : paperShortSide;
+
+final paperHeight = orientation == 'Horizontal'
+    ? paperShortSide
+    : paperLongSide;
+
+final overlapRatioX = overlapMm / paperWidth;
+final overlapRatioY = overlapMm / paperHeight;
     // Gera cada parte do painel.
     for (var index = 0; index < pageCount; index++) {
       final row = index ~/ cols;

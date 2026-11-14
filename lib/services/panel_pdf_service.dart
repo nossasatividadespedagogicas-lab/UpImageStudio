@@ -131,11 +131,11 @@ final overlapRatioY = overlapMm / paperHeight;
             pw.Text(
               'GUIA DE MONTAGEM DO PAINEL',
               style: pw.TextStyle(
-                fontSize: 20,
+                fontSize: 26,
                 fontWeight: pw.FontWeight.bold,
               ),
             ),
-            pw.SizedBox(height: 8),
+            pw.SizedBox(height: 14),
             pw.Text(
               'Organize as folhas na ordem indicada. '
               'Comece pela primeira linha e avance da esquerda '
@@ -144,7 +144,7 @@ final overlapRatioY = overlapMm / paperHeight;
             pw.SizedBox(height: 18),
             pw.Text(
               'MAPA DAS FOLHAS',
-              style: pw.TextStyle(
+              style: pw.TextStyle(fontSize: 20,
                 fontWeight: pw.FontWeight.bold,
               ),
             ),

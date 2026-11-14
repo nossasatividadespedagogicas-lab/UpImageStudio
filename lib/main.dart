@@ -52,7 +52,7 @@ class _StudioHomeState extends State<StudioHome> {
   String? _artName;
   String _style = 'Colorido e lúdico';
   int _pages = 4;
-  int _overlap = 5;
+  int _overlap = 0;
   String _paper = 'A4';
   String _orientation = 'Horizontal';
   bool _busy = false;
